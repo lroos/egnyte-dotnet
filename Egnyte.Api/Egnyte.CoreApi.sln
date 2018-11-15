@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egnyte.CoreApi", "Egnyte.CoreApi.csproj", "{7C7F09FC-6447-4476-864B-79AC229116A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C7F09FC-6447-4476-864B-79AC229116A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C7F09FC-6447-4476-864B-79AC229116A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C7F09FC-6447-4476-864B-79AC229116A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C7F09FC-6447-4476-864B-79AC229116A6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0FF627E-108E-4C73-860B-94A75055AF90}
+	EndGlobalSection
+EndGlobal
