@@ -32,3 +32,5 @@ packages
 **/.build/Reports
 **/.build/NuGetPackage
 *ncrunch*
+.vs/
+Egnyte.Api/.vs/*
