@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egnyte.CoreApi", "Egnyte.CoreApi.csproj", "{7C7F09FC-6447-4476-864B-79AC229116A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egnyte.Api.Tests", "..\Egnyte.Api.Tests\Egnyte.Api.Tests.csproj", "{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egnyte.Api.CoreTests", "..\Egnyte.Api.CoreTests\Egnyte.Api.CoreTests.csproj", "{9B3B727A-A0AA-462F-A0B4-6D5A5D1E370A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7C7F09FC-6447-4476-864B-79AC229116A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C7F09FC-6447-4476-864B-79AC229116A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C7F09FC-6447-4476-864B-79AC229116A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B3B727A-A0AA-462F-A0B4-6D5A5D1E370A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B3B727A-A0AA-462F-A0B4-6D5A5D1E370A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B3B727A-A0AA-462F-A0B4-6D5A5D1E370A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B3B727A-A0AA-462F-A0B4-6D5A5D1E370A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

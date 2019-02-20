@@ -1,4 +1,6 @@
-﻿namespace Egnyte.Api
+﻿using Egnyte.CoreApi.Metadata;
+
+namespace Egnyte.Api
 {
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -59,6 +61,7 @@
             Permissions = new PermissionsClient(httpClient, domain, host);
             Search = new SearchClient(httpClient, domain, host);
             Audit = new AuditClient(httpClient, domain, host);
+            MetadataClient = new MetadataClient(httpClient, domain, host);
         }
 
         /// <summary>
@@ -66,6 +69,8 @@
         /// download, and list information about files and folders
         /// </summary>
         public FilesClient Files { get; private set; }
+
+        public MetadataClient MetadataClient { get; private set; }
 
         /// <summary>
         /// Users allows you to create, update, get information about, and delete users.
