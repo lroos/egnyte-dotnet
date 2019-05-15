@@ -2,7 +2,7 @@
 
 namespace Egnyte.CoreApi.Metadata
 {
-    internal class MetadataSearchSpec
+    public class MetadataSearchSpec
     {
         [JsonProperty("type")]
         private MetadataSearchType Type { get; set; }

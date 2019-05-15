@@ -235,6 +235,11 @@ namespace Egnyte.Api.Links
                 builder.AppendFormat(@", ""folder_per_recipient"": ""{0}""", link.FolderPerRecipient.Value ? "true" : "false");
             }
 
+            if(link.IncludeFilename.HasValue)
+            {
+                builder.AppendFormat(@", ""add_file_name"": ""{0}""", link.IncludeFilename.Value ? "true" : "false");
+            }
+
             builder.Append("}");
 
             return builder.ToString();

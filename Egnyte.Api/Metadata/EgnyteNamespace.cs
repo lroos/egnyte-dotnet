@@ -20,7 +20,12 @@ namespace Egnyte.CoreApi.Metadata
         public NamespaceScope Scope { get; set; }
 
         [JsonProperty("keys")]
-        public MetadataKey[] Keys { get; set; }
+        public Dictionary<string, MetadataKey> Keys { get; set; }
+
+        public EgnyteNamespace()
+        {
+
+        }
 
         public EgnyteNamespace(string displayName, NamespaceScope scope)
         {
@@ -28,7 +33,8 @@ namespace Egnyte.CoreApi.Metadata
             this.Scope = scope;
         }
 
-        public EgnyteNamespace(string name, string displayName, NamespaceScope scope, MetadataKey[] keys)
+        [JsonConstructor]
+        public EgnyteNamespace(string name, string displayName, NamespaceScope scope, Dictionary<string, MetadataKey> keys)
         {
             this.Name = name;
             this.DisplayName = displayName;

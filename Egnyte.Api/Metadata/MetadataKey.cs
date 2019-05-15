@@ -32,5 +32,29 @@ namespace Egnyte.CoreApi.Metadata
 
         [JsonProperty("helpText", NullValueHandling = NullValueHandling.Ignore)]
         public string[] HelpText { get; set; }
+
+        public MetadataKey(MetadataKeyType type)
+        {
+            this.Type = type;
+        }
+
+        public MetadataKey(string key, MetadataKeyType type) : this(type)
+        {
+            this.KeyName = key;
+        }
+
+        [JsonConstructor]
+        public MetadataKey(string keyName, MetadataKeyType type, string[] data, string[] displayName, string[] helpText)
+        {
+            KeyName = keyName;
+            Type = type;
+            Data = data;
+            DisplayName = displayName;
+            HelpText = helpText;
+        }
+
+        public MetadataKey()
+        {
+        }
     }
 }

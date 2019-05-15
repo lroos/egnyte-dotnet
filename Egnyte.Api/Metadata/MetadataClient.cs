@@ -20,18 +20,17 @@ namespace Egnyte.CoreApi.Metadata
         {
         }
 
-        public async Task<bool> CreateNamespace(string name, NamespaceScope scope, MetadataKey[] keys, string displayName = null)
+        public async Task<bool> CreateNamespace(string name, NamespaceScope scope, Dictionary<string, MetadataKey> keys, string displayName = null)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
-
-            /*
-            if(keys == null || keys.Length == 0)
+            
+            if(keys == null || keys.Count == 0)
             {
                 throw new ArgumentNullException(nameof(keys));
-            }*/
+            }
 
             var query = string.Empty;
 
@@ -157,13 +156,16 @@ namespace Egnyte.CoreApi.Metadata
             }
 
             var query = string.Empty;
+            string url = NamespaceMethod + "/" + name + "/keys";
+            Console.WriteLine(url);
+            string content = JsonConvert.SerializeObject(key);
+            Console.WriteLine(content);
 
-
-            var uriBuilder = BuildUri(NamespaceMethod + "/" + name + "/keys", query);
+            var uriBuilder = BuildUri(url, query);
             var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.Uri)
             {
                 Content = new StringContent(
-                    JsonConvert.SerializeObject(key),
+                    content,
                     Encoding.UTF8,
                     "application/json")
             };
