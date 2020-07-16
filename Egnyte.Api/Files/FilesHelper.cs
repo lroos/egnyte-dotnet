@@ -79,6 +79,38 @@
             return content;
         }
 
+        internal static string MapLockFileRequest(string lockToken, long? lockTimeout)
+        {
+            var jsonParams = new List<string>();
+
+            jsonParams.Add("\"action\": \"lock\"");
+
+            if (!string.IsNullOrWhiteSpace(lockToken))
+            {
+                jsonParams.Add("\"lock_token\": \"" + lockToken + "\"");
+            }
+            if (lockTimeout.HasValue)
+            {
+                jsonParams.Add("\"lock_timeout\": " + lockTimeout.Value);
+            }
+
+            var content = "{" + string.Join(",", jsonParams) + "}";
+
+            return content;
+        }
+
+        internal static string MapUnlockFileRequest(string lockToken)
+        {
+            var jsonParams = new List<string>();
+
+            jsonParams.Add("\"action\": \"unlock\"");
+            jsonParams.Add("\"lock_token\": \"" + lockToken + "\"");
+
+            var content = "{" + string.Join(",", jsonParams) + "}";
+
+            return content;
+        }
+
         internal static UpdateFolderMetadata MapFolderUpdateToMetadata(UpdateFolderResponse response)
         {
             return new UpdateFolderMetadata
@@ -153,12 +185,15 @@
             {
                 case PublicLinksType.FilesFolders:
                     return "files_folders";
+
                 case PublicLinksType.Files:
                     return "files";
+
                 default:
                     return "disabled";
             }
         }
+
         private static PublicLinksType ParsePublicLinksType(string publicLink)
         {
             switch (publicLink)

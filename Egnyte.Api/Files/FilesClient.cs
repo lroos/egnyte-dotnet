@@ -8,15 +8,18 @@
 
     using Egnyte.Api.Common;
     using System.Collections.Generic;
+
     public class FilesClient : BaseClient
     {
-        const string FilesMethod = "/pubapi/v1/fs";
+        private const string FilesMethod = "/pubapi/v1/fs";
 
-        const string FilesContentMethod = "/pubapi/v1/fs-content";
+        private const string FilesContentMethod = "/pubapi/v1/fs-content";
 
-        const string FilesChunkedContentMethod = "/pubapi/v1/fs-content-chunked";
-        
-        internal FilesClient(HttpClient httpClient, string domain = "", string host = "") : base(httpClient, domain, host) { }
+        private const string FilesChunkedContentMethod = "/pubapi/v1/fs-content-chunked";
+
+        internal FilesClient(HttpClient httpClient, string domain = "", string host = "") : base(httpClient, domain, host)
+        {
+        }
 
         /// <summary>
         /// Creates a folder for specified path
@@ -35,7 +38,7 @@
             {
                 Content = new StringContent(@"{""action"": ""add_folder""}", Encoding.UTF8, "application/json")
             };
-            
+
             var serviceHandler = new ServiceHandler<FolderCreatedResponse>(httpClient);
             var response = await serviceHandler.SendRequestAsync(httpRequest).ConfigureAwait(false);
 
@@ -178,7 +181,7 @@
             {
                 httpRequest.Headers.Add("Range", string.Format("bytes={0}-{1}", rangeOfBytes.From, rangeOfBytes.To));
             }
-            
+
             var serviceHandler = new ServiceHandler<string>(httpClient);
             var response = await serviceHandler.GetFileToDownload(httpRequest).ConfigureAwait(false);
 
@@ -325,7 +328,7 @@
             {
                 throw new ArgumentNullException(nameof(file));
             }
-            
+
             var uriBuilder = BuildUri(FilesChunkedContentMethod + "/" + path);
             var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.Uri)
             {
@@ -439,7 +442,7 @@
             {
                 throw new ArgumentException("None of the optional parameters were provided");
             }
-            
+
             var uriBuilder = BuildUri(FilesMethod + "/" + path);
             var httpRequest = new HttpRequestMessage(new HttpMethod("PATCH"), uriBuilder.Uri)
             {
@@ -455,7 +458,77 @@
             return FilesHelper.MapFolderUpdateToMetadata(response.Data);
         }
 
-        DownloadedFile MapResponseToDownloadedFile(ServiceResponse<byte[]> response)
+        /// <summary>
+        /// Locks the file at the specified path
+        /// </summary>
+        /// <param name="path">Full path to folder</param>
+        /// <param name="lockToken">The token that must be used to unlock the file. If not provided when
+        /// locking a file, a random token will be generated and returned in the response.</param>
+        /// <param name="lockTimeout">The time in seconds that the file should be locked for. If omitted,
+        /// a time of one hour will be used by default.</param>
+        /// <returns></returns>
+        /// <remarks>The time cannot exceed 7 days. After 7 days, all the (stale) locks will be cleared automatically.</remarks>
+        public async Task<FileLock> LockFile(
+            string path,
+            string lockToken = null,
+            long? lockTimeout = null)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            var uriBuilder = BuildUri(FilesMethod + "/" + path);
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.Uri)
+            {
+                Content = new StringContent(
+                    FilesHelper.MapLockFileRequest(lockToken, lockTimeout),
+                    Encoding.UTF8,
+                    "application/json")
+            };
+
+            var serviceHandler = new ServiceHandler<FileLock>(httpClient);
+            var response = await serviceHandler.SendRequestAsync(httpRequest).ConfigureAwait(false);
+
+            return response.Data;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="path">Full path to folder</param>
+        /// <param name="lockToken">The lock_token used when locking the file must be presented to unlock the file.	</param>
+        /// <returns></returns>
+        public async Task<bool> UnlockFile(
+            string path,
+            string lockToken)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(lockToken))
+            {
+                throw new ArgumentNullException(nameof(lockToken));
+            }
+
+            var uriBuilder = BuildUri(FilesMethod + "/" + path);
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, uriBuilder.Uri)
+            {
+                Content = new StringContent(
+                    FilesHelper.MapUnlockFileRequest(lockToken),
+                    Encoding.UTF8,
+                    "application/json")
+            };
+
+            var serviceHandler = new ServiceHandler<string>(httpClient);
+            var response = await serviceHandler.SendRequestAsync(httpRequest).ConfigureAwait(false);
+
+            return true;
+        }
+
+        private DownloadedFile MapResponseToDownloadedFile(ServiceResponse<byte[]> response)
         {
             return new DownloadedFile(
                            response.Data,
@@ -477,7 +550,7 @@
                            GetFullFileLengthFromRange(response.Headers));
         }
 
-        DownloadedFileAsStream MapResponseToDownloadedFileAsStream(ServiceResponse<Stream> response)
+        private DownloadedFileAsStream MapResponseToDownloadedFileAsStream(ServiceResponse<Stream> response)
         {
             return new DownloadedFileAsStream(
                            response.Data,
@@ -499,7 +572,7 @@
                            GetFullFileLengthFromRange(response.Headers));
         }
 
-        long GetFullFileLengthFromRange(Dictionary<string, string> headers)
+        private long GetFullFileLengthFromRange(Dictionary<string, string> headers)
         {
             if (headers.ContainsKey("Content-Range"))
             {
@@ -513,7 +586,7 @@
             return 0;
         }
 
-        Uri PrepareListFileOrFolderUri(string path, bool listContent, bool allowedLinkTypes)
+        private Uri PrepareListFileOrFolderUri(string path, bool listContent, bool allowedLinkTypes)
         {
             var query = "list_content=" + listContent + "&allowed_link_types=" + allowedLinkTypes;
             var uriBuilder = BuildUri(FilesMethod + "/" + path, query);
@@ -521,7 +594,7 @@
             return uriBuilder.Uri;
         }
 
-        Uri PrepareDownloadFileUri(string path, string entryId = "")
+        private Uri PrepareDownloadFileUri(string path, string entryId = "")
         {
             var query = string.Empty;
 
@@ -529,7 +602,7 @@
             {
                 query += "entry_id=" + entryId;
             }
-            
+
             var uriBuilder = BuildUri(FilesContentMethod + "/" + path, query);
 
             return uriBuilder.Uri;

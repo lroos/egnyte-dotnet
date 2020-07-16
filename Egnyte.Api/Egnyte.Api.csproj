@@ -48,6 +48,8 @@
     <Compile Include="Audit\AuditReportAccessPoint.cs" />
     <Compile Include="Audit\AuditReportFormat.cs" />
     <Compile Include="Audit\CreateLoginAuditReportResponse.cs" />
+    <Compile Include="Authentication\AuthenticationClient.cs" />
+    <Compile Include="Authentication\UserInfo.cs" />
     <Compile Include="Common\BaseClient.cs" />
     <Compile Include="Common\EgnyteApiException.cs" />
     <Compile Include="Common\HttpResponseMessageExtensions.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="Files\DownloadedFileAsStream.cs" />
     <Compile Include="Files\FolderCreatedResponse.cs" />
     <Compile Include="Files\PublicLinksType.cs" />
+    <Compile Include="Files\FileLock.cs" />
     <Compile Include="Files\UpdateFolderMetadata.cs" />
     <Compile Include="Files\UpdateFolderResponse.cs" />
     <Compile Include="Files\UploadedFileMetadata.cs" />
