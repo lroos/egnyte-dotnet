@@ -1,18 +1,18 @@
 ﻿namespace Egnyte.Api
 {
+    using System;
     using System.Net.Http;
     using System.Net.Http.Headers;
-
-    using Egnyte.Api.Files;
-    using System;
-    using Users;
-    using Links;
+    using Audit;
+    using Authentication;
+    using Files;
+    using Metadata;
     using Groups;
+    using Links;
     using Permissions;
     using Search;
-    using Audit;
     using Tasks;
-    using Egnyte.Api.Authentication;
+    using Users;
 
     public class EgnyteClient
     {
@@ -63,6 +63,7 @@
             Search = new SearchClient(httpClient, domain, host);
             Audit = new AuditClient(httpClient, domain, host);
             Tasks = new TasksClient(httpClient, domain, host);
+            Metadata = new MetadataClient(httpClient, domain, host);
         }
 
         /// <summary>
@@ -123,5 +124,11 @@
         /// and list the details for a specific task. Tasks API can also be referred to as "Workflow API".
         /// </summary>
         public TasksClient Tasks { get; private set; }
+
+        /// <summary>
+        /// The Metadata API allows you to define custom metadata fields and then use those fields to set
+        /// values on files, file versions, and folders. Metadata fields (keys) are grouped together in namespaces.
+        /// </summary>
+        public MetadataClient Metadata { get; private set; }
     }
 }
