@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Egnyte.Api.Tests.Lniks
+namespace Egnyte.Api.Tests.Links
 {
     using System.Net;
     using System.Net.Http;
@@ -13,7 +13,7 @@ namespace Egnyte.Api.Tests.Lniks
     [TestFixture]
     public class GetLinkDetailsTests
     {
-        const string GetLinkDetailsResponse = @"
+        private const string GetLinkDetailsResponse = @"
             {
                 ""path"": ""/Shared/johnd/fun.png"",
                 ""type"": ""file"",
@@ -45,7 +45,7 @@ namespace Egnyte.Api.Tests.Lniks
                                 Encoding.UTF8,
                                 "application/json")
                     });
-            
+
             var egnyteClient = new EgnyteClient("token", "acme", httpClient);
             var linkDetails = await egnyteClient.Links.GetLinkDetails("jKI7Lx9VPA");
 
