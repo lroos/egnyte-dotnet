@@ -75,5 +75,7 @@ namespace Egnyte.Api.Links
         /// Only applies to upload links.
         /// </summary>
         public bool? FolderPerRecipient { get; set; }
+
+        public bool? IncludeFilename { get; set; }
     }
 }

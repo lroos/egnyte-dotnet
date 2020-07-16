@@ -10,10 +10,12 @@ namespace Egnyte.Api.Links
 {
     public class LinksClient : BaseClient
     {
-        const string LinkMethod = "/pubapi/v1/links";
-        const string LinkMethodV2 = "/pubapi/v2/links";
+        private const string LinkMethod = "/pubapi/v1/links";
+        private const string LinkMethodV2 = "/pubapi/v2/links";
 
-        internal LinksClient(HttpClient httpClient, string domain = "", string host = "") : base(httpClient, domain, host) { }
+        internal LinksClient(HttpClient httpClient, string domain = "", string host = "") : base(httpClient, domain, host)
+        {
+        }
 
         /// <summary>
         /// Lists all links. Please note, that if the user executing this method is not an admin,
@@ -173,16 +175,16 @@ namespace Egnyte.Api.Links
             return true;
         }
 
-        string MapLinkForRequest(NewLink link)
+        private string MapLinkForRequest(NewLink link)
         {
             var builder = new StringBuilder();
             builder
                 .Append("{")
                 .Append("\"path\" : \"" + link.Path + "\",")
-                .Append("\"type\" : \"" + MapLinkType(link.Type) + "\"" );
+                .Append("\"type\" : \"" + MapLinkType(link.Type) + "\"");
 
             if (link.Type != LinkType.Upload)
-                builder.AppendFormat(@", ""accessibility"": ""{0}""", MapAccessibilityType(link.Accessibility));            
+                builder.AppendFormat(@", ""accessibility"": ""{0}""", MapAccessibilityType(link.Accessibility));
 
             if (!string.IsNullOrWhiteSpace(link.Password))
             {
@@ -199,7 +201,7 @@ namespace Egnyte.Api.Links
                     builder.Append("]");
                 }
             }
-   
+
             if (!string.IsNullOrWhiteSpace(link.Message))
             {
                 builder.Append(", \"message\": \"" + link.Message + "\"");
@@ -235,12 +237,17 @@ namespace Egnyte.Api.Links
                 builder.AppendFormat(@", ""folder_per_recipient"": ""{0}""", link.FolderPerRecipient.Value ? "true" : "false");
             }
 
+            if (link.IncludeFilename.HasValue)
+            {
+                builder.AppendFormat(@", ""add_file_name"": ""{0}""", link.IncludeFilename.Value ? "true" : "false");
+            }
+
             builder.Append("}");
 
             return builder.ToString();
         }
 
-        void ThrowExceptionsIfNewLinkIsInvalid(NewLink link)
+        private void ThrowExceptionsIfNewLinkIsInvalid(NewLink link)
         {
             if (link == null)
             {
@@ -253,9 +260,7 @@ namespace Egnyte.Api.Links
             }
         }
 
-        
-
-        Uri ListLinksRequestUri(
+        private Uri ListLinksRequestUri(
             string linkMethod,
             string path,
             string userName,
@@ -314,27 +319,30 @@ namespace Egnyte.Api.Links
             return uriBuilder.Uri;
         }
 
-        string MapAccessibilityType(LinkAccessibility value)
+        private string MapAccessibilityType(LinkAccessibility value)
         {
             switch (value)
             {
                 case LinkAccessibility.Domain:
                     return "domain";
+
                 case LinkAccessibility.Password:
                     return "password";
+
                 case LinkAccessibility.Recipients:
                     return "recipients";
+
                 default:
                     return "anyone";
             }
         }
 
-        string MapLinkType(LinkType linkType)
+        private string MapLinkType(LinkType linkType)
         {
             switch (linkType)
             {
                 case LinkType.File: return "file";
-                case LinkType.Upload: return "upload";                
+                case LinkType.Upload: return "upload";
                 default: return "folder";
             }
         }
