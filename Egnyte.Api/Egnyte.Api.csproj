@@ -61,6 +61,7 @@
     <Compile Include="Files\DownloadedFileAsStream.cs" />
     <Compile Include="Files\FolderCreatedResponse.cs" />
     <Compile Include="Files\PublicLinksType.cs" />
+    <Compile Include="Files\FileLock.cs" />
     <Compile Include="Files\UpdateFolderMetadata.cs" />
     <Compile Include="Files\UpdateFolderResponse.cs" />
     <Compile Include="Files\UploadedFileMetadata.cs" />
