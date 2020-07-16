@@ -76,6 +76,10 @@ namespace Egnyte.Api.Links
         /// </summary>
         public bool? FolderPerRecipient { get; set; }
 
+        /// <summary>
+        /// If True then the filename will be appended to the end of the link. Only applies to
+        /// file links, not folder links.
+        /// </summary>
         public bool? IncludeFilename { get; set; }
     }
 }
