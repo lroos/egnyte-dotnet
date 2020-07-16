@@ -12,6 +12,7 @@
     using Search;
     using Audit;
     using Tasks;
+    using Egnyte.Api.Authentication;
 
     public class EgnyteClient
     {
@@ -53,6 +54,7 @@
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+            Auth = new AuthenticationClient(httpClient, domain, host);
             Files = new FilesClient(httpClient, domain, host);
             Users = new UsersClient(httpClient, domain, host);
             Links = new LinksClient(httpClient, domain, host);
@@ -62,6 +64,11 @@
             Audit = new AuditClient(httpClient, domain, host);
             Tasks = new TasksClient(httpClient, domain, host);
         }
+
+        /// <summary>
+        /// Auth allows you to inspect and manage the OAuth access token
+        /// </summary>
+        public AuthenticationClient Auth { get; private set; }
 
         /// <summary>
         /// Files allows you to perform the normal file system actions: create, update, move, copy, delete,
