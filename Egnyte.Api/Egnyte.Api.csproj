@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
-    <Version>0.1.21</Version>
+    <Version>0.1.22</Version>
     <Authors>Michał Białecki</Authors>
     <Company>Egnyte Inc</Company>
     <Product>Egnyte .Net</Product>
