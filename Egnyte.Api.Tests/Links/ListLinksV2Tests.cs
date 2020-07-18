@@ -130,17 +130,17 @@ namespace Egnyte.Api.Tests.Links
             var linksList = await egnyteClient.Links.ListLinksV2(
                 "shared/",
                 "johnd",
-                new DateTime(2016, 05, 01),
-                new DateTime(2016, 01, 01),
-                Api.Links.LinkType.Folder,
-                Api.Links.LinkAccessibility.Recipients,
+                new DateTime(2016, 05, 01, 10, 30, 12, 333, DateTimeKind.Utc),
+                new DateTime(2016, 01, 01, 10, 30, 12, 333, DateTimeKind.Utc),
+                LinkType.Folder,
+                LinkAccessibility.Recipients,
                 100,
                 15);
 
             var requestMessage = httpHandlerMock.GetHttpRequestMessage();
             Assert.AreEqual(
-                @"https://acme.egnyte.com/pubapi/v2/links?path=shared/&username=johnd&created_before=2016-05-01&created_after=2016-01-01&type=folder&accessibility=recipients&offset=100&count=15",
-                requestMessage.RequestUri.ToString());
+                @"https://acme.egnyte.com/pubapi/v2/links?path=/shared/&username=johnd&created_before=2016-05-01T10:30:12%2B0000&created_after=2016-01-01T10:30:12%2B0000&type=folder&accessibility=recipients&offset=100&count=15",
+            requestMessage.RequestUri.ToString());
         }
     }
 }

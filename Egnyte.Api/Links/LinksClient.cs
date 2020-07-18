@@ -269,7 +269,8 @@ namespace Egnyte.Api.Links
             LinkType? linkType,
             LinkAccessibility? accessibility,
             int? offset,
-            int? count)
+            int? count,
+            int version = 2)
         {
             var queryParams = new List<string>();
             if (!string.IsNullOrWhiteSpace(path))
@@ -282,14 +283,29 @@ namespace Egnyte.Api.Links
                 queryParams.Add("username=" + userName);
             }
 
-            if (createdBefore.HasValue)
+            if (version == 1)
             {
-                queryParams.Add("created_before=" + createdBefore.Value.ToString("yyyy-MM-dd"));
-            }
+                if (createdBefore.HasValue)
+                {
+                    queryParams.Add("created_before=" + createdBefore.Value.ToString("yyyy-MM-dd"));
+                }
 
-            if (createdAfter.HasValue)
+                if (createdAfter.HasValue)
+                {
+                    queryParams.Add("created_after=" + createdAfter.Value.ToString("yyyy-MM-dd"));
+                }
+            }
+            else
             {
-                queryParams.Add("created_after=" + createdAfter.Value.ToString("yyyy-MM-dd"));
+                if (createdBefore.HasValue)
+                {
+                    queryParams.Add("created_before=" + GetEgnyte8601(createdBefore.Value));
+                }
+
+                if (createdAfter.HasValue)
+                {
+                    queryParams.Add("created_after=" + GetEgnyte8601(createdAfter.Value));
+                }
             }
 
             if (linkType.HasValue)
@@ -317,6 +333,26 @@ namespace Egnyte.Api.Links
             var uriBuilder = BuildUri(linkMethod, query);
 
             return uriBuilder.Uri;
+        }
+
+        /// <summary>
+        /// Returns a version of an ISO 8601 date string that Egnyte expects
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <remarks>Egnyte uses non-standard ISO 8601 parsing that does not accept the strings
+        /// produced from the "o" or "u" specifiers:
+        /// <para>Too much precision: 2009-06-15T13:45:30.0000000-07:00</para>
+        /// <para>Does not accept colon in timezone: 2009-06-15T13:45:30.00-07:00</para>
+        /// <para>Does not accept UTC zone Z: 2009-06-15T13:45:30.00Z</para>
+        /// </remarks>
+        /// <example>2017-03-05T14:55:59+0200</example>
+        private string GetEgnyte8601(DateTime dateTime)
+        {
+            var timeZone = dateTime.ToString("K:") // "K" alone results in "Input string was not in a correct format"
+                .Replace("Z", "+0000")
+                .Replace(":", string.Empty);
+
+            return Uri.EscapeDataString(string.Format("{0:s}{1}", dateTime, timeZone));
         }
 
         private string MapAccessibilityType(LinkAccessibility value)
