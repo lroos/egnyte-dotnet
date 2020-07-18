@@ -21,7 +21,7 @@ namespace Egnyte.Api.Tests.Links
                 ""protection"": ""None"",
                 ""recipients"": [""johnd@egnyte.com""],
                 ""notify"": false,
-                ""url"": ""https://test.egnyte.com/dl/jKI7Lx9VPA"",
+                ""url"": ""https://acme.egnyte.com/dl/jKI7Lx9VPA"",
                 ""id"": ""jKI7Lx9VPA"",
                 ""link_to_current"": false,
                 ""creation_date"": ""2016-01-28"",
@@ -60,7 +60,7 @@ namespace Egnyte.Api.Tests.Links
             Assert.AreEqual(1, linkDetails.Recipients.Count);
             Assert.AreEqual("johnd@egnyte.com", linkDetails.Recipients[0]);
             Assert.IsFalse(linkDetails.Notify);
-            Assert.AreEqual("https://test.egnyte.com/dl/jKI7Lx9VPA", linkDetails.Url);
+            Assert.AreEqual("https://acme.egnyte.com/dl/jKI7Lx9VPA", linkDetails.Url);
             Assert.AreEqual("jKI7Lx9VPA", linkDetails.Id);
             Assert.IsFalse(linkDetails.LinkToCurrent);
             Assert.AreEqual(new DateTime(2016, 01, 28), linkDetails.CreationDate);

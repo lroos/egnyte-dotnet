@@ -42,6 +42,11 @@ namespace Egnyte.Api.Links
             int? offset = null,
             int? count = null)
         {
+            if (path != null && !path.StartsWith("/", StringComparison.Ordinal))
+            {
+                path = "/" + path;
+            }
+
             var httpRequest = new HttpRequestMessage(
                 HttpMethod.Get,
                 ListLinksRequestUri(
@@ -53,7 +58,8 @@ namespace Egnyte.Api.Links
                     linkType,
                     accessibility,
                     offset,
-                    count));
+                    count,
+                    version: 1));
 
             var serviceHandler = new ServiceHandler<LinksList>(httpClient);
             var response = await serviceHandler.SendRequestAsync(httpRequest).ConfigureAwait(false);
@@ -88,6 +94,11 @@ namespace Egnyte.Api.Links
             int? offset = null,
             int? count = null)
         {
+            if (path != null && !path.StartsWith("/", StringComparison.Ordinal))
+            {
+                path = "/" + path;
+            }
+
             var httpRequest = new HttpRequestMessage(
                 HttpMethod.Get,
                 ListLinksRequestUri(
@@ -194,7 +205,7 @@ namespace Egnyte.Api.Links
             if (link.SendEmail.HasValue)
             {
                 builder.AppendFormat(@", ""send_email"" : ""{0}""", link.SendEmail.Value ? "true" : "false");
-                if (link.Recipients.Count > 0)
+                if (link.Recipients?.Count > 0)
                 {
                     builder.Append(", \"recipients\": [");
                     builder.Append(string.Join(", ", link.Recipients.Select(r => "\"" + r + "\"")));

@@ -9,9 +9,9 @@ namespace Egnyte.Api.Links
         public string ResourceId { get; set; }
 
         [JsonProperty(PropertyName = "expiry_clicks")]
-        public int ExpiryClicks { get; set; }
+        public int? ExpiryClicks { get; set; }
 
         [JsonProperty(PropertyName = "expiry_date")]
-        public DateTime ExpiryDate { get; set; }   
+        public DateTime? ExpiryDate { get; set; }
     }
 }

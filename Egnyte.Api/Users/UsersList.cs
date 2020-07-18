@@ -13,7 +13,7 @@ namespace Egnyte.Api.Users
             TotalResults = totalResults;
             ItemsPerPage = itemsPerPage;
             StartIndex = startIndex;
-            Users = users;
+            Users = users ?? new List<ExistingUser>();
         }
 
         /// <summary>

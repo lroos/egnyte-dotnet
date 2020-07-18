@@ -29,7 +29,7 @@
                 uploadedBy,
                 numberOfVersions)
         {
-            Versions = versions;
+            Versions = versions ?? new List<FileVersionMetadata>();
         }
 
         public List<FileVersionMetadata> Versions { get; private set; } 

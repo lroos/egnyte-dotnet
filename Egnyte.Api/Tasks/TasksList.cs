@@ -6,7 +6,7 @@ namespace Egnyte.Api.Tasks
     {
         public TasksList(List<TaskDetails> tasks, int count)
         {
-            Tasks = tasks;
+            Tasks = tasks ?? new List<TaskDetails>();
             Count = count;
         }
 

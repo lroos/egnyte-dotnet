@@ -33,7 +33,7 @@ namespace Egnyte.Api.Links
         /// <summary>
         /// Optional. List email addresses of recipients of the link. Only required if send_email is True.
         /// </summary>
-        public List<string> Recipients { get; set; }
+        public List<string> Recipients { get; set; } = new List<string>();
 
         /// <summary>
         /// Optional. Personal message to be sent in link email. Only applies if send_email is True.

@@ -26,7 +26,7 @@ namespace Egnyte.Api.Links
             CreationDate = creationDate;
             CreatedBy = createdBy;
             Protection = protection;
-            Recipients = recipients;
+            Recipients = recipients ?? new List<string>();
             Url = url;
             Id = id;
         }

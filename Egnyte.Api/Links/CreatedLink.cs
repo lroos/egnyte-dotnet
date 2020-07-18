@@ -19,7 +19,7 @@ namespace Egnyte.Api.Links
             bool sendMail,
             bool copyMe)
         {
-            Links = links;
+            Links = links ?? new List<Link>();
             Path = path;
             Type = type;
             Accessibility = accessibility;

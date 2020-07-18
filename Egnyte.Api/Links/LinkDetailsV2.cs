@@ -18,8 +18,8 @@ namespace Egnyte.Api.Links
             string url,
             string id,
             string resourceId,
-            int expiry_clicks,
-            DateTime expiry_date)
+            int? expiryClicks,
+            DateTime? expiryDate)
             : base(
                   path,
                   type,
@@ -34,8 +34,8 @@ namespace Egnyte.Api.Links
                   id)
         {
             ResourceId = resourceId;
-            ExpiryClicks = expiry_clicks;
-            ExpiryDate = expiry_date;
+            ExpiryClicks = expiryClicks;
+            ExpiryDate = expiryDate;
         }
 
         /// <summary>
@@ -48,12 +48,12 @@ namespace Egnyte.Api.Links
         /// Number of clicks left on the link before expiration.
         /// This field is only shown if the link is to expire via clicks
         /// </summary>
-        public int ExpiryClicks { get; private set; }
+        public int? ExpiryClicks { get; private set; }
 
         /// <summary>
         /// Date and time of the expiration of the link.
         /// This field is only shown if the link is to expire by date
         /// </summary>
-        public DateTime ExpiryDate { get; private set; }
+        public DateTime? ExpiryDate { get; private set; }
     }
 }

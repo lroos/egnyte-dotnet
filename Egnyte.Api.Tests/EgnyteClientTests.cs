@@ -15,7 +15,7 @@ namespace Egnyte.Api.Tests
 
             var httpClient = new HttpClient();
             var client = new EgnyteClient(token, "domain", httpClient, timeout);
-            
+
             Assert.AreEqual(token, httpClient.DefaultRequestHeaders.Authorization.Parameter);
             Assert.AreEqual("Bearer", httpClient.DefaultRequestHeaders.Authorization.Scheme);
 

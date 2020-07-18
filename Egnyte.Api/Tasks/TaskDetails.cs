@@ -24,7 +24,7 @@ namespace Egnyte.Api.Tasks
             this.DueDate = dueDate;
             this.DueDateTimestamp = dueDateTimestamp;
             this.Assignor = assignor;
-            this.Assignees = assignees;
+            this.Assignees = assignees ?? new List<TaskUser>();
             this.Status = status;
             this.File = file;
         }

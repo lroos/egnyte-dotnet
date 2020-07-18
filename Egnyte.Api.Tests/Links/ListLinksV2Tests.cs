@@ -22,26 +22,26 @@ namespace Egnyte.Api.Tests.Links
                     ""protection"":""NONE"",
                     ""recipients"":[""mik.bialecki+test107@gmail.com""],
                     ""notify"":false,
-                    ""url"":""https://test.egnyte.com/dl/PLeklqtBWN"",
+                    ""url"":""https://acme.egnyte.com/dl/PLeklqtBWN"",
                     ""id"":""PLeklqtBWN"",
                     ""link_to_current"":false,
                     ""creation_date"":""2016-01-28T06:01:17+0000"",
                     ""created_by"":""mik"",
-                    ""resource_id"":""ebb76829-06b0-4e32-bec1-f7fea5b00311""},
+                    ""resource_id"":""ebb76829-06b0-4e32-bec1-f7fea5b00311"",
+                    ""expiry_date"":""2020-01-28T06:01:17+0000""},
                {
                     ""path"":""/Shared/MikTests/xbox2.png"",
                     ""type"":""file"",
-                    ""accessibility"":""anyone"",
+                    ""accessibility"":""password"",
                     ""protection"":""NONE"",
                     ""recipients"":[""mik.bialecki@gmail.com""],
-                    ""notify"":false,
-                    ""url"":""https://test.egnyte.com/dl/jKI7Lx9VPE"",
+                    ""notify"":true,
+                    ""url"":""https://acme.egnyte.com/dl/jKI7Lx9VPE"",
                     ""id"":""jKI7Lx9VPE"",
-                    ""link_to_current"":false,
+                    ""link_to_current"":true,
                     ""creation_date"":""2016-01-28T06:01:17+0000"",
                     ""created_by"":""mik"",
                     ""resource_id"":""ebb76829-06b0-4e32-bec1-f7fea5b00311"",
-                    ""expiry_date"":""2020-01-28T06:01:17+0000"",
                     ""expiry_clicks"":""6""}]
             ,""count"":2}";
 
@@ -82,29 +82,28 @@ namespace Egnyte.Api.Tests.Links
             Assert.AreEqual(1, firstLink.Recipients.Count);
             Assert.AreEqual("mik.bialecki+test107@gmail.com", firstLink.Recipients.First());
             Assert.AreEqual(false, firstLink.Notify);
-            Assert.AreEqual("https://test.egnyte.com/dl/PLeklqtBWN", firstLink.Url);
+            Assert.AreEqual("https://acme.egnyte.com/dl/PLeklqtBWN", firstLink.Url);
             Assert.AreEqual("PLeklqtBWN", firstLink.Id);
             Assert.AreEqual(false, firstLink.LinkToCurrent);
             Assert.AreEqual(new DateTime(2016, 01, 28, 6, 01, 17, DateTimeKind.Utc).ToLocalTime(), firstLink.CreationDate);
             Assert.AreEqual("mik", firstLink.CreatedBy);
-            Assert.AreEqual(default(DateTime), firstLink.ExpiryDate);
-            Assert.AreEqual(0, firstLink.ExpiryClicks);
+            Assert.AreEqual(new DateTime(2020, 01, 28, 6, 01, 17, DateTimeKind.Utc).ToLocalTime(), firstLink.ExpiryDate);
+            Assert.AreEqual(null, firstLink.ExpiryClicks);
 
             var secondLink = linksList.Links[1];
             Assert.AreEqual("ebb76829-06b0-4e32-bec1-f7fea5b00311", secondLink.ResourceId);
             Assert.AreEqual("/Shared/MikTests/xbox2.png", secondLink.Path);
             Assert.AreEqual(LinkType.File, secondLink.Type);
-            Assert.AreEqual(LinkAccessibility.Anyone, secondLink.Accessibility);
+            Assert.AreEqual(LinkAccessibility.Password, secondLink.Accessibility);
             Assert.AreEqual(ProtectionType.None, secondLink.Protection);
             Assert.AreEqual(1, secondLink.Recipients.Count);
             Assert.AreEqual("mik.bialecki@gmail.com", secondLink.Recipients.First());
-            Assert.AreEqual(false, secondLink.Notify);
-            Assert.AreEqual("https://test.egnyte.com/dl/jKI7Lx9VPE", secondLink.Url);
-            Assert.AreEqual("PLeklqtBWN", firstLink.Id);
-            Assert.AreEqual(false, secondLink.LinkToCurrent);
+            Assert.AreEqual(true, secondLink.Notify);
+            Assert.AreEqual("https://acme.egnyte.com/dl/jKI7Lx9VPE", secondLink.Url);
+            Assert.AreEqual("jKI7Lx9VPE", secondLink.Id);
+            Assert.AreEqual(true, secondLink.LinkToCurrent);
             Assert.AreEqual(new DateTime(2016, 01, 28, 6, 01, 17, DateTimeKind.Utc).ToLocalTime(), secondLink.CreationDate);
             Assert.AreEqual("mik", secondLink.CreatedBy);
-            Assert.AreEqual(new DateTime(2020, 01, 28, 6, 01, 17, DateTimeKind.Utc).ToLocalTime(), secondLink.ExpiryDate);
             Assert.AreEqual(6, secondLink.ExpiryClicks);
         }
 

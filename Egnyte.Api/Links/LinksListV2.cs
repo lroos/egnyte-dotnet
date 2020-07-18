@@ -6,7 +6,7 @@ namespace Egnyte.Api.Links
     {
         public LinksListV2(List<LinkDetailsV2> links, int count)
         {
-            Links = links;
+            Links = links ?? new List<LinkDetailsV2>();
             Count = count;
         }
 
