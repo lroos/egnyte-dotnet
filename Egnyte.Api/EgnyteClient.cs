@@ -13,6 +13,7 @@
     using Search;
     using Tasks;
     using Users;
+    using Egnyte.Api.Common;
 
     public class EgnyteClient
     {
@@ -44,7 +45,7 @@
                 throw new ArgumentNullException("domain", "Domain or host has to specified");
             }
 
-            httpClient = httpClient ?? new HttpClient();
+            httpClient = httpClient ?? new HttpClient(new RateLimitMessageHandler());
 
             httpClient.Timeout = TimeSpan.FromMinutes(10);
             if (requestTimeout.HasValue)
