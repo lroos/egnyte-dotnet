@@ -1,10 +1,10 @@
 ﻿namespace Egnyte.Api.Common
 {
     using System;
+    using System.IO;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Newtonsoft.Json;
-    using System.IO;
 
     public class ServiceHandler<T> where T : class
     {
@@ -17,41 +17,65 @@
 
         public async Task<ServiceResponse<T>> SendRequestAsync(HttpRequestMessage request)
         {
-            request.RequestUri = ApplyAdditionalUrlMapping(request.RequestUri);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
-            var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
-
-            if (response.IsSuccessStatusCode)
+            object o = null;
+            try
             {
-                try
+                request.RequestUri = ApplyAdditionalUrlMapping(request.RequestUri);
+
+                if (BaseClient.BeforeRequest != null)
                 {
-                    if (typeof(T) == typeof(string))
+                    o = BaseClient.BeforeRequest.Invoke(request, httpClient);
+                }
+
+                var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+                var rawContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (BaseClient.AfterResponse != null)
+                {
+                    o = BaseClient.AfterResponse.Invoke(o, request, response, rawContent);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    try
                     {
+                        if (typeof(T) == typeof(string))
+                        {
+                            return new ServiceResponse<T>
+                            {
+                                Data = rawContent as T,
+                                Headers = response.GetResponseHeaders()
+                            };
+                        }
+
                         return new ServiceResponse<T>
                         {
-                            Data = rawContent as T,
+                            Data = JsonConvert.DeserializeObject<T>(rawContent),
                             Headers = response.GetResponseHeaders()
                         };
                     }
-
-                    return new ServiceResponse<T>
+                    catch (Exception e)
                     {
-                        Data = JsonConvert.DeserializeObject<T>(rawContent),
-                        Headers = response.GetResponseHeaders()
-                    };
+                        throw new EgnyteApiException(
+                            rawContent,
+                            response,
+                            e);
+                    }
                 }
-                catch (Exception e)
-                {
-                    throw new EgnyteApiException(
-                        rawContent,
-                        response,
-                        e);
-                }
-            }
 
-            throw new EgnyteApiException(
-                    rawContent,
-                    response);
+                throw new EgnyteApiException(
+                        rawContent,
+                        response);
+            }
+            catch (Exception e)
+            {
+                if (BaseClient.AfterException != null)
+                {
+                    BaseClient.AfterException.Invoke(o, request, e);
+                }
+
+                throw;
+            }
         }
 
         public async Task<ServiceResponse<byte[]>> GetFileToDownload(HttpRequestMessage request)
