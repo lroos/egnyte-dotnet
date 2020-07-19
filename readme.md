@@ -13,6 +13,7 @@ To install `Egnyte.Api`, run the following command in the Package Manager Consol
 ## Supported frameworks
 
 * .Net Framework 4.5
+* .Net Core 1.0
 * Windows Phone 8.1
 * Xamarin
 
@@ -35,7 +36,7 @@ var authorizeUrl = OAuthHelper.GetAuthorizeUri(
     "https://mywebsite.com/redirectEgnyteResponse");
 ```
 
-You will need to redirect user to that url, so he can enter he's credentianls. After getting the response, token can be obtained like this:
+You will need to redirect the user to that url, so they can enter their credentials. After getting the response, token can be obtained like this:
 
 ```csharp
 var token = await EgnyteClientHelper.GetTokenFromCode(
