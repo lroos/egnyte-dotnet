@@ -5,15 +5,35 @@ namespace Egnyte.Api.Common
 {
     public class BaseClient
     {
-        const string basePath = "{0}.egnyte.com";
-        const string baseSchema = "https";
-        const int basePort = 443;
+        private const string basePath = "{0}.egnyte.com";
+        private const string baseSchema = "https";
+        private const int basePort = 443;
 
         internal readonly HttpClient httpClient;
 
         internal readonly string domain;
 
         internal readonly string host;
+
+        /// <summary>
+        /// Insertion point for logging of requests to API.
+        /// Occurs just prior to sending the request.
+        /// </summary>
+        /// <value>Returns a unique value related to the request if needed in the After functions</value>
+        public static Func<HttpRequestMessage, HttpClient, object> BeforeRequest { get; set; }
+
+        /// <summary>
+        /// Insertion point for logging of requests to API.
+        /// Occurs after the response is received before any handling of status or content.
+        /// </summary>
+        /// <value>Returns the same value as BeforeRequest with any updates from response information</value>
+        public static Func<object, HttpRequestMessage, HttpResponseMessage, string, object> AfterResponse { get; set; }
+
+        /// <summary>
+        /// Insertion point for logging of requests to API.
+        /// Occurs after an exception due to status or content of the response.
+        /// </summary>
+        public static Action<object, HttpRequestMessage, Exception> AfterException { get; set; }
 
         internal BaseClient(HttpClient httpClient, string domain = "", string host = "")
         {
