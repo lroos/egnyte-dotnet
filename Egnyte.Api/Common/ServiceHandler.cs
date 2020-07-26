@@ -58,25 +58,46 @@
         {
             request.RequestUri = ApplyAdditionalUrlMapping(request.RequestUri);
             var response = await this.httpClient.SendAsync(request);
-            var bytes = await response.Content.ReadAsByteArrayAsync();
-            return new ServiceResponse<byte[]>
+
+            if (response.IsSuccessStatusCode)
             {
-                Data = bytes,
-                Headers = response.GetResponseHeaders()
-            };
+                var bytes = await response.Content.ReadAsByteArrayAsync();
+
+                return new ServiceResponse<byte[]>
+                {
+                    Data = bytes,
+                    Headers = response.GetResponseHeaders()
+                };
+            }
+
+            var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
+
+            throw new EgnyteApiException(
+                   rawContent,
+                   response);
         }
 
         public async Task<ServiceResponse<Stream>> GetFileToDownloadAsStream(HttpRequestMessage request)
         {
             request.RequestUri = ApplyAdditionalUrlMapping(request.RequestUri);
             var response = await this.httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-            var stream = await response.Content.ReadAsStreamAsync();
 
-            return new ServiceResponse<Stream>
+            if (response.IsSuccessStatusCode)
             {
-                Data = stream,
-                Headers = response.GetResponseHeaders()
-            };
+                var stream = await response.Content.ReadAsStreamAsync();
+
+                return new ServiceResponse<Stream>
+                {
+                    Data = stream,
+                    Headers = response.GetResponseHeaders()
+                };
+            }
+
+            var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
+
+            throw new EgnyteApiException(
+                   rawContent,
+                   response);
         }
 
         private Uri ApplyAdditionalUrlMapping(Uri requestUri)
