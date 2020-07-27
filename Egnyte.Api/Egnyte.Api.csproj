@@ -22,11 +22,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>lib\portable-net45+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>lib\portable-net45+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Egnyte.Api.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,9 +46,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audit\AuditClient.cs" />
+    <Compile Include="Audit\AuditReport.cs" />
     <Compile Include="Audit\AuditReportAccessPoint.cs" />
+    <Compile Include="Audit\AuditReportEnum.cs" />
     <Compile Include="Audit\AuditReportFormat.cs" />
+    <Compile Include="Audit\AuditReportStatusResponse.cs" />
+    <Compile Include="Audit\CreateFileAuditReportResponse.cs" />
     <Compile Include="Audit\CreateLoginAuditReportResponse.cs" />
+    <Compile Include="Audit\FileAuditReportResponse.cs" />
+    <Compile Include="Audit\FileAuditResponseItem.cs" />
+    <Compile Include="Audit\IAuditReportResponse.cs" />
+    <Compile Include="Audit\IAuditResponseItem.cs" />
+    <Compile Include="Audit\LoginAuditReportResponse.cs" />
+    <Compile Include="Audit\LoginAuditResponseItem.cs" />
     <Compile Include="Authentication\AuthenticationClient.cs" />
     <Compile Include="Authentication\UserInfo.cs" />
     <Compile Include="Common\BaseClient.cs" />
