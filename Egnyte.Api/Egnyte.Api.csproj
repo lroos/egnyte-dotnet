@@ -53,6 +53,7 @@
     <Compile Include="Common\BaseClient.cs" />
     <Compile Include="Common\EgnyteApiException.cs" />
     <Compile Include="Common\HttpResponseMessageExtensions.cs" />
+    <Compile Include="Common\RateLimitMessageHandler.cs" />
     <Compile Include="Common\ServiceHandler.cs" />
     <Compile Include="Common\ServiceResponse.cs" />
     <Compile Include="EgnyteClient.cs" />
