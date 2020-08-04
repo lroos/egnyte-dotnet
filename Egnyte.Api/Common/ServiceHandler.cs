@@ -1,10 +1,13 @@
 ﻿namespace Egnyte.Api.Common
 {
     using System;
+    using System.IO;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Egnyte.Api.Shared.Common;
     using Newtonsoft.Json;
-    using System.IO;
+    using Newtonsoft.Json.Linq;
 
     public class ServiceHandler<T> where T : class
     {
@@ -46,6 +49,38 @@
                         rawContent,
                         response,
                         e);
+                }
+            }
+
+            if (response.Content?.Headers.ContentType.MediaType == "application/json")
+            {
+                try
+                {
+                    dynamic json = JValue.Parse(rawContent);
+                    string errorMessage;
+
+                    if (json.formErrors != null)
+                    {
+                        var errorContent = JsonConvert.DeserializeObject<ErrorResponse>(rawContent);
+                        errorMessage = errorContent.FormErrors
+                            .Union(errorContent.InputErrors.SelectMany(kvp => kvp.Value))
+                            .FirstOrDefault()?.Message;
+
+                        var inputErrors = from kvp in errorContent.InputErrors
+                                          from error in kvp.Value
+                                          select string.Format("{0}: {1}", kvp.Key, error.Message);
+
+                        errorMessage = string.Join("; ", errorContent.FormErrors.Select(error => error.Message).Union(inputErrors)) + ".";
+                    }
+                    else
+                    {
+                        errorMessage = json.errorMessage ?? json.message ?? json.error;
+                    }
+
+                    rawContent = errorMessage ?? rawContent;
+                }
+                catch
+                {
                 }
             }
 

@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     public static class EgnyteClientHelper
     {
@@ -80,8 +81,16 @@
                 var result = await httpClient.PostAsync(tokenRequesrUri.BaseAddress, content).ConfigureAwait(false);
 
                 var rawContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(rawContent);
 
-                return JsonConvert.DeserializeObject<TokenResponse>(rawContent);
+                // API does not respond with OAuth compliant message
+                if (!result.IsSuccessStatusCode && string.IsNullOrEmpty(tokenResponse.Error))
+                {
+                    dynamic json = JValue.Parse(rawContent);
+                    tokenResponse.Error = json.errorMessage ?? json.message;
+                }
+
+                return tokenResponse;
             }
             finally
             {
