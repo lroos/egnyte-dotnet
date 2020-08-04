@@ -39,7 +39,7 @@ namespace Egnyte.Api.Common
                     {
                     }
 
-                    await TaskEx.Delay(TimeSpan.FromSeconds(seconds), cancellationToken);
+                    await Task.Delay(TimeSpan.FromSeconds(seconds), cancellationToken);
                     continue;
                 }
 

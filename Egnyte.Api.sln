@@ -3,24 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egnyte.Api", "Egnyte.Api\Egnyte.Api.csproj", "{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egnyte.Api.Tests", "Egnyte.Api.Tests\Egnyte.Api.Tests.csproj", "{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egnyte.Api.Portable", "Egnyte.Api.Portable\Egnyte.Api.Portable.csproj", "{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Egnyte.Api.Framework", "Egnyte.Api.Framework\Egnyte.Api.Framework.csproj", "{617D6949-0DF1-40E8-B2F0-CD3595145CDD}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Egnyte.Api.Shared", "Egnyte.Api\Egnyte.Api.Shared.shproj", "{408E2DD9-E49D-4156-87A0-D95541A536D2}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Egnyte.Api\Egnyte.Api.Shared.projitems*{408e2dd9-e49d-4156-87a0-d95541a536d2}*SharedItemsImports = 13
+		Egnyte.Api\Egnyte.Api.Shared.projitems*{617d6949-0df1-40e8-b2f0-cd3595145cdd}*SharedItemsImports = 4
+		Egnyte.Api\Egnyte.Api.Shared.projitems*{a87ea96f-ed93-4d61-bd4c-6ab3029ef2e0}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2B13ED0-A42E-44B2-9721-88E2B523CAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87EA96F-ED93-4D61-BD4C-6AB3029EF2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{617D6949-0DF1-40E8-B2F0-CD3595145CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{617D6949-0DF1-40E8-B2F0-CD3595145CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{617D6949-0DF1-40E8-B2F0-CD3595145CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{617D6949-0DF1-40E8-B2F0-CD3595145CDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
