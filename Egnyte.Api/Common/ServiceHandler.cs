@@ -22,10 +22,11 @@
         {
             request.RequestUri = ApplyAdditionalUrlMapping(request.RequestUri);
             var response = await httpClient.SendAsync(request).ConfigureAwait(false);
-            var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
 
             if (response.IsSuccessStatusCode)
             {
+                var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
+
                 try
                 {
                     if (typeof(T) == typeof(string))
@@ -52,40 +53,10 @@
                 }
             }
 
-            if (response.Content?.Headers.ContentType.MediaType == "application/json")
-            {
-                try
-                {
-                    dynamic json = JValue.Parse(rawContent);
-                    string errorMessage;
-
-                    if (json.formErrors != null)
-                    {
-                        var errorContent = JsonConvert.DeserializeObject<ErrorResponse>(rawContent);
-                        errorMessage = errorContent.FormErrors
-                            .Union(errorContent.InputErrors.SelectMany(kvp => kvp.Value))
-                            .FirstOrDefault()?.Message;
-
-                        var inputErrors = from kvp in errorContent.InputErrors
-                                          from error in kvp.Value
-                                          select string.Format("{0}: {1}", kvp.Key, error.Message);
-
-                        errorMessage = string.Join("; ", errorContent.FormErrors.Select(error => error.Message).Union(inputErrors)) + ".";
-                    }
-                    else
-                    {
-                        errorMessage = json.errorMessage ?? json.message ?? json.error;
-                    }
-
-                    rawContent = errorMessage ?? rawContent;
-                }
-                catch
-                {
-                }
-            }
+            var errorMessage = await GetError(response);
 
             throw new EgnyteApiException(
-                    rawContent,
+                    errorMessage,
                     response);
         }
 
@@ -105,11 +76,11 @@
                 };
             }
 
-            var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
+            var errorMessage = await GetError(response);
 
             throw new EgnyteApiException(
-                   rawContent,
-                   response);
+                errorMessage,
+                response);
         }
 
         public async Task<ServiceResponse<Stream>> GetFileToDownloadAsStream(HttpRequestMessage request)
@@ -128,11 +99,11 @@
                 };
             }
 
-            var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
+            var errorMessage = await GetError(response);
 
             throw new EgnyteApiException(
-                   rawContent,
-                   response);
+                errorMessage,
+                response);
         }
 
         private Uri ApplyAdditionalUrlMapping(Uri requestUri)
@@ -141,6 +112,40 @@
             url = url.Replace("[", "%5B")
                      .Replace("]", "%5D");
             return new Uri(url);
+        }
+
+        private async Task<string> GetError(HttpResponseMessage response)
+        {
+            var rawContent = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : null;
+            var errorMessage = (string)null;
+
+            if (response.Content?.Headers.ContentType.MediaType == "application/json")
+            {
+                try
+                {
+                    dynamic json = JValue.Parse(rawContent);
+
+                    if (json.formErrors != null)
+                    {
+                        var errorContent = JsonConvert.DeserializeObject<ErrorResponse>(rawContent);
+
+                        var inputErrors = from kvp in errorContent.InputErrors
+                                          from error in kvp.Value
+                                          select string.Format("{0}: {1}", kvp.Key, error.Message);
+
+                        errorMessage = string.Join("; ", errorContent.FormErrors.Select(error => error.Message).Union(inputErrors)) + ".";
+                    }
+                    else
+                    {
+                        errorMessage = json.errorMessage ?? json.message ?? json.error;
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+            return errorMessage ?? rawContent;
         }
     }
 }
